@@ -74,8 +74,6 @@ class ActivityController extends BaseController {
 	}
 
 	public async logout(req: express.Request, res: express.Response): Promise<any> {
-		console.log(req.body.token);
-
 		try {
 			const result = await this.authService.logout(req.body.token);
 			res.send(this.getSuccessResponse({ id: result.insertId, message: 'Logged out successfully' }));

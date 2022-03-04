@@ -11,12 +11,10 @@ class Menu extends BaseController {
 	}
 
 
-
 	public async getMenuItems(req: express.Request, res: express.Response): Promise<any> {
 		try {
 			const user = req.user as any;
-			req.body.companyId = user;
-			const result = await this.menuService.getMenuItems();
+			const result = await this.menuService.getMenuItems(user);
 			res.send(this.getSuccessResponse(result));
 		}
 		catch (e) {
@@ -24,6 +22,17 @@ class Menu extends BaseController {
 		}
 	}
 
+	public async getSubMenu(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;
+			
+			const result = await this.menuService.getSubMenu(user, req.body.menuId);
+			res.send(this.getSuccessResponse(result));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
+	}
 }
 
 export default Menu;

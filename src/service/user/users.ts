@@ -30,10 +30,10 @@ class UserService {
 		);
 	}
 
-	public async getUserDetailsByUserId(userId: number): Promise<any> {
+	public async getUserDetailsByUserId(userid: number): Promise<any> {
 		return this.databaseget.query(`
 			CALL getUserDetailsByUserId_snew( 
-				${userId}
+				${userid}
 			)`
 		);
 	}
@@ -108,7 +108,7 @@ class UserService {
 					${userRequest.businessName ? this.db.connection.escape(userRequest.businessName) : null},
 					${userRequest.role_Id ? userRequest.role_Id : null},
 					UTC_TIMESTAMP,
-					${userRequest.userId ? userRequest.userId : null},
+					${userRequest.userid ? userRequest.userid : null},
 					${userRequest.phone ? this.db.connection.escape(userRequest.phone) : null},
 					${userRequest.fax ? this.db.connection.escape(userRequest.fax) : null},
 					${userRequest.terminal_Id ? userRequest.terminal_Id : null},
@@ -156,7 +156,7 @@ class UserService {
 			}
 		});
 		if (text && userRequest.user_Id) {
-			text += ` UpdatedAt=UTC_TIMESTAMP, updateduserId = ${userRequest.userId}`;
+			text += ` UpdatedAt=UTC_TIMESTAMP, updateduserId = ${userRequest.userid}`;
 			return this.db.query(`
 			UPDATE
 				user
@@ -186,7 +186,7 @@ class UserService {
 	// 				'admin',
 	// 				${passportRequest.user_Id},
 	// 				UTC_TIMESTAMP,
-	// 				${passportRequest.userId ? passportRequest.userId : null}
+	// 				${passportRequest.userid ? passportRequest.userid : null}
 	// 			)
 	// 	`);
 	// }

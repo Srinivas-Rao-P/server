@@ -1,13 +1,20 @@
 import { ApiRoute, apiPrefix, RouteMethod } from './api';
-// import passport from 'passport';
+import verifyToken from "../../middlewares/verifyToken";
 
 const routes: ApiRoute[] = [{
 	controller: 'menu#getMenuItems',
 	method: RouteMethod.GET,
-	// middlewares: [
-	// 	passport.authenticate('bearer')
-	// ],
+	middlewares: [
+		verifyToken()
+	],
 	path: `${apiPrefix}/menu`
+},{
+	controller: 'menu#getSubMenu',
+	method: RouteMethod.POST,
+	middlewares: [
+		verifyToken()
+	],
+	path: `${apiPrefix}/menu/getSubMenu`
 }
 ];
 

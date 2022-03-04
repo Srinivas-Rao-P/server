@@ -16,7 +16,7 @@ class ActivityLogService {
                 ${req.module_Id}, 
                 ${req.description ? this.db.connection.escape(req.description) : null},
                 UTC_TIMESTAMP,
-                ${req.userId ? req.userId : null}
+                ${req.userid ? req.userid : null}
             )
         `);
 	}

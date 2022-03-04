@@ -43,7 +43,7 @@ class Employee extends BaseController {
 	// 	try {
 	// 		const user = req.user as any;
 	// 		req.body.companyId = user.companyId;
-	// 		req.body.userId = user.id;
+	// 		req.body.userid = user.id;
 	// 		const { address } = req.body;            
 
 	// 		if (req.body.userName) {
@@ -60,7 +60,7 @@ class Employee extends BaseController {
 	// 					password : req.body.password,
 	// 					phone : req.body.phone,
 	// 					role_Id : req.body.role_Id,
-	// 					userId : user.id,
+	// 					userid : user.id,
 	// 					userName : req.body.userName
 	// 				};
 	// 				const userResult = await this.usersService.signUpUser(opUser);
@@ -71,7 +71,7 @@ class Employee extends BaseController {
 	// 		}   
 
 	// 		if (address && !req.body.address_Id && address.address1) {
-	// 			address.userId = user.id;
+	// 			address.userid = user.id;
 	// 			const addressResult = await this.addressService.addAddress(address);
 	// 			req.body.address_Id = addressResult.insertId;
 	// 		}
@@ -81,7 +81,7 @@ class Employee extends BaseController {
 	// 			description: JSON.stringify(req.body),
 	// 			module: 'Employee',
 	// 			module_Id: result.insertId,
-	// 			userId: req.body.userId,
+	// 			userid: req.body.userid,
 	// 		});
 	// 		res.send(this.getSuccessResponse({ id: result.insertId }));
 	// 	} catch (error) {

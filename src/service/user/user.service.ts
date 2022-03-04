@@ -27,10 +27,7 @@ class UserService {
 	}
 
 	public validatePassword(username: string, password: string): Promise<any> {
-		console.log(password);
-
 		return this.db.query(`
-		
 			SELECT 
 				u.id as id,
 				u.username as username 
@@ -38,8 +35,6 @@ class UserService {
 				users as u 
 			WHERE u.username = '${username}' 
 				AND u.password = '${password}'
-		  
-		
 		`);
 		// 	SELECT 
 		// 		u.id as id,
@@ -56,7 +51,7 @@ class UserService {
 				t.refreshToken as token				
 			FROM
 				tokens as t
-			LEFT JOIN users as u ON t.userId = u.id
+			LEFT JOIN users as u ON t.userid = u.id
 			WHERE
 				t.refreshToken = '${token}'
 				AND u.isdeleted = 0

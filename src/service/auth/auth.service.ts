@@ -73,7 +73,7 @@ class AuthService {
     this.db.query(`
     INSERT 
       INTO 
-      tokens(userId, token, refreshToken) 
+      tokens(userid, token, refreshToken) 
         VALUES (
           ${this.db.connection.escape(user.id)},
           ${this.db.connection.escape(accessToken)},
@@ -100,7 +100,7 @@ class AuthService {
         this.db.query(`
         INSERT 
           INTO 
-          tokens(userId, token) 
+          tokens(userid, token) 
             VALUES (
               ${user.id},
               ${this.db.connection.escape(accessToken)})
@@ -137,5 +137,5 @@ class AuthService {
 export default AuthService;
 
 const generateAccessToken = (user: any) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1500000s' })
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1500s' })
 }

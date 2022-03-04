@@ -36,7 +36,7 @@ class EmployeeService {
 	// 				'${req.emergencyContactName2 ? req.emergencyContactName2 : ''}',
 	// 				'${req.emergencyContactPhone2 ? req.emergencyContactPhone2 : ''}',
 	// 				${req.companyId ? req.companyId : null},
-	// 				${req.userId ? req.userId : null},
+	// 				${req.userid ? req.userid : null},
 	// 				'${req.joinedDate ? req.joinedDate : ''}',
 	// 				${req.hourlyRate ? req.hourlyRate : null},
 	// 				${req.subCompany_Id ? req.subCompany_Id : null}
