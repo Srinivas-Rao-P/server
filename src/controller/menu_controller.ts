@@ -14,8 +14,9 @@ class Menu extends BaseController {
 	public async getMenuItems(req: express.Request, res: express.Response): Promise<any> {
 		try {
 			const user = req.user as any;
-			const result = await this.menuService.getMenuItems(user);
-			res.send(this.getSuccessResponse(result));
+			const menu = await this.menuService.getMenuItems(user);
+			menu.subMenu = await this.menuService.getSubMenu(user, 5);
+			res.send(this.getSuccessResponse(menu));
 		}
 		catch (e) {
 			res.status(500).send(this.getErrorResponse(e));

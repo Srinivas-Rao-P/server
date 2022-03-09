@@ -8,11 +8,13 @@ class MenuService {
 
 	public async getMenuItems(user: any): Promise<any> {
 		return this.db.query(`
-			select m.name, m.description, m.icon, m.link 
+			select m.id, m.name, m.description, m.icon, m.link, m.userrole, m.submenu, s.id AS submenuid
 			FROM menu m 
-			where m.userrole LIKE '%${user.userRole}%' 
-			AND m.companyid = ${user.companyId}
-			`)
+			LEFT JOIN submenu s ON m.id = s.menuid			
+			where m.userrole LIKE '%${user.userRole}%'
+			GROUP BY m.name
+			ORDER BY m.orderid ASC
+		`)
 	};
 
 	public async getSubMenu(user: any, menuId: number): Promise<any> {
@@ -21,8 +23,9 @@ class MenuService {
 			FROM submenu s 
             WHERE s.userrole LIKE '%${user.userRole}%' 
             AND s.menuid = ${menuId}
-            AND s.companyid  = ${user.companyId}
-			`)
+			GROUP BY s.name
+			ORDER BY s.orderid ASC
+		`)
 	};
 }
 
