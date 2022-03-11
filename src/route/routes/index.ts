@@ -6,6 +6,7 @@ import menuRoutes from './menu';
 import candidateRoutes from './candidate';
 import emailRoutes from './email';
 import bankRoutes from './bank';
+import emergencycontactRoutes from './emergencycontact';
 
 export const routes = [
 	...apiRoutes,
@@ -16,4 +17,5 @@ export const routes = [
 	...candidateRoutes,
 	...emailRoutes,
 	...bankRoutes,
+	...emergencycontactRoutes,
 ];

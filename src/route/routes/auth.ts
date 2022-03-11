@@ -6,6 +6,10 @@ const routes: ApiRoute[] = [{
     method: RouteMethod.POST,
     path: `${apiPrefix}/auth/login`
 }, {
+    controller: 'auth#candidateLogin',
+    method: RouteMethod.POST,
+    path: `${apiPrefix}/auth/candidateLogin`
+}, {
     controller: 'auth#register',
     method: RouteMethod.POST,
     path: `${apiPrefix}/auth/register`

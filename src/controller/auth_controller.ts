@@ -40,6 +40,33 @@ class ActivityController extends BaseController {
 			res.status(500).send((error));
 		}
 	}
+	public async candidateLogin(req: express.Request, res: express.Response): Promise<any> {
+		try {
+
+			const users = await this.userService.findCandidate(req.body);
+			const user = users && users.length ? users[0] : null;
+
+			if (user) {
+				// validate token
+				const validateToken = await this.userService.verifyToken(req.body.token);
+				
+				if (validateToken) {
+					const result = await this.authService.candidateLogin(req.body);
+					res.send(this.getSuccessResponse({ accessToken: result.accessToken, refreshToken: result.refreshToken }));
+				}
+				else {
+					res.send(this.getSuccessResponse({ message: 'Incorrect password' }));
+				}
+			}
+			else {
+				res.send(this.getSuccessResponse({ message: 'User not found.' }));
+			}
+		}
+		catch (error) {
+			res.status(500).send((error));
+		}
+	}
+
 	public async refreshToken(req: express.Request, res: express.Response): Promise<any> {
 		try {
 			const refreshToken = req.body.token

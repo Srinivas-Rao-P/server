@@ -65,8 +65,7 @@ class AuthService {
     const user = {
       name: req.username,
       id: req.id,
-      userRole: req.userRole,
-      companyId: req.companyId
+      userRole: req.userRole
     }
     const accessToken = generateAccessToken(user)
     const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
@@ -82,7 +81,32 @@ class AuthService {
             UPDATE 
             token = ${this.db.connection.escape(accessToken)};
       `);
-    
+
+    return { accessToken: accessToken, refreshToken: refreshToken }
+  }
+
+  public async candidateLogin(req: any): Promise<any> {
+    const user = {
+      name: req.email,
+      email: req.email,
+      id: req.candidateId,
+      userRole: 5
+    }
+    const accessToken = generateAccessToken(user)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+    this.db.query(`
+    INSERT 
+      INTO 
+      tokens(userid, token, refreshToken) 
+        VALUES (
+          ${user.id},
+          '${accessToken}',
+          '${refreshToken}')
+          ON DUPLICATE KEY
+            UPDATE 
+            token = ${this.db.connection.escape(accessToken)};
+      `);
+
     return { accessToken: accessToken, refreshToken: refreshToken }
   }
 
@@ -93,8 +117,7 @@ class AuthService {
         const userDetails = {
           name: user.username,
           id: user.id,
-          userRole: user.userRole,
-          companyId: user.companyId
+          userRole: user.userRole
         }
         const accessToken = generateAccessToken(userDetails)
         this.db.query(`
