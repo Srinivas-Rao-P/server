@@ -4,6 +4,12 @@
 		"tslint-config-prettier",
 		"tslint-no-commented-code-rule"
 	],
+	"linterOptions": {
+		"exclude": [
+			"bin",
+			"**/*.ts"
+		]
+	},
 	"rules": {
 		"class-name": true,
 		"ordered-imports": false,

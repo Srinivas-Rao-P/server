@@ -33,6 +33,55 @@ class Menu extends BaseController {
 		catch (e) {
 			res.status(500).send(this.getErrorResponse(e));
 		}
+	
+	}
+
+	public async addMainMenu(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;
+			
+			await this.menuService.addMainMenu(req.body);
+			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
+	}
+
+	public async addSubMenu(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;
+			const { menuId } = req.params;
+			await this.menuService.addSubMenu(req.body, menuId);
+			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
+	}
+
+	public async updateMenu(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;
+			await this.menuService.updateMenu(req.body);
+			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
+	}
+
+	public async updateSubMenu(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;			
+			const { menuId } = req.params;
+			
+			await this.menuService.updateSubMenu(req.body, menuId);
+			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
 	}
 }
 

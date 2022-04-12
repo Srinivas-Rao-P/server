@@ -27,6 +27,76 @@ class MenuService {
 			ORDER BY s.orderid ASC
 		`)
 	};
+
+	public async addMainMenu(req: any): Promise<any> {
+		console.log(req);
+		
+		return this.db.query(`
+			INSERT INTO menu(name, description, icon, link, userrole) 
+			VALUES ('${req.name}', '${req.description}', '${req.icon}', '${req.link}', '${req.userrole}')
+		`)
+	};
+
+	public async addSubMenu(req: any, menuId: any): Promise<any> {
+		console.log(req);
+
+		return this.db.query(`
+			UPDATE menu m SET submenu = ${req} WHERE m.id = ${menuId}
+		`)
+	};
+
+	public async updateMenu(req: any): Promise<any> {
+		let text = '';
+		const fields: any = [
+			'name',
+			'description',
+			'icon',
+			'link',
+			'userrole',
+			'submenu'
+		];
+		Object.keys(req).map((key) => {
+			if (fields.indexOf(key) > -1) {
+				if (typeof req[key] === 'string') {
+					text += key + '="' + `${req[key]}` + '",';
+				} else {
+					text += key + '=' + `${req[key]}` + ',';
+				}
+			}
+		});
+
+		if (text && req.id) {
+			text += ` updatedat = UTC_TIMESTAMP, updateduserid = ${req.userid}`;
+			return this.db.query(`
+				Update menu
+			SET
+				${text}
+			WHERE
+				id = ${req.id}
+		 	`);
+		} else {
+			return null
+		}
+	};
+
+	public async updateSubMenu(req: any, menuId: any): Promise<any> {
+		console.log(`
+		Update menu m
+	SET
+		m.submenu = ${JSON.stringify(req)}					
+	WHERE
+		m.id = ${menuId}
+	 `);
+
+		return this.db.query(`
+				Update menu m
+			SET
+				m.submenu = '${JSON.stringify(req)}'			
+			WHERE
+				m.id = ${menuId}
+		 	`);
+
+	};
 }
 
 export default MenuService;

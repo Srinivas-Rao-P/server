@@ -48,8 +48,8 @@ const transporter = nodemailer.createTransport({
     port: 465,               // true for 465, false for other ports
     host: "smtp.gmail.com",
     auth: {
-        user: 'vp.srinivasrao@gmail.com',
-        pass: '8197279373',
+        user: process.env.fromEmail,
+        pass: process.env.pass,
     },
     secure: true,
 });

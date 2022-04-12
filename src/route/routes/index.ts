@@ -7,6 +7,7 @@ import candidateRoutes from './candidate';
 import emailRoutes from './email';
 import bankRoutes from './bank';
 import emergencycontactRoutes from './emergencycontact';
+import manageuserrolesRoutes from './manageuserroles';
 
 export const routes = [
 	...apiRoutes,
@@ -18,4 +19,5 @@ export const routes = [
 	...emailRoutes,
 	...bankRoutes,
 	...emergencycontactRoutes,
+	...manageuserrolesRoutes,
 ];

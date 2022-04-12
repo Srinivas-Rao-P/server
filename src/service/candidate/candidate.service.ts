@@ -96,10 +96,14 @@ class CandidateService {
 	public async create(): Promise<any> {
 		const createDD = {
 			managerList: await this.db.query(`
-			SELECT u.id, u.username as name FROM users u WHERE userRole = 2	
+				SELECT u.id, u.username as name FROM users u WHERE userRole = '2'	
+				union
+				select uir.id, uir.fname as name from users_in_role uir WHERE uir.roledefinitionid = '2'	
 		`),
 			referrerList: await this.db.query(`
-			SELECT u.id, u.username as name FROM users u	
+				SELECT u.id, u.username as name FROM users u
+				union
+				select uir.id, uir.fname as name from users_in_role uir group by name		
 		`),
 			statusList: await this.db.query(`
 			SELECT c.id, c.status FROM candidatestatus c	
