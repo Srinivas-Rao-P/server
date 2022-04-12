@@ -54,6 +54,22 @@ class EmployeeService {
 					1
 			`)
 	};
+
+	public async manageEmployee(managerId: string): Promise<any> {
+
+		return this.db.query(`
+			select 
+				c.id, p.firstname , p.lastname, p.imageurl , c.designation, c.date as hiredate, cs.status  
+			from 
+				profile p 
+			join 
+				candidates c on p.userid = c.id 
+			join
+				candidatestatus cs on c.status = cs.id
+			where 
+				c.managerid = ${managerId} order by cs.status desc
+		`)
+	};
 }
 
 export default EmployeeService;

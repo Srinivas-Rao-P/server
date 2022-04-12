@@ -39,6 +39,18 @@ class Employee extends BaseController {
 		}
 	}
 
+	public async manageEmployee(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const user = req.user as any;
+			const { managerId } = req.params;
+			const result = await this.employeeService.manageEmployee(managerId);
+			res.send(this.getSuccessResponse(result));
+		}
+		catch (e) {
+			res.status(500).send(this.getErrorResponse(e));
+		}
+	}
+
 	// public async addEmployee(req: express.Request, res: express.Response): Promise<any> {
 	// 	try {
 	// 		const user = req.user as any;
