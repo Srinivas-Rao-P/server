@@ -4,12 +4,7 @@
 	"description": "Starter Kit for express API's",
 	"main": "index.js",
 	"scripts": {
-		"test": "jest",
-		"tslint": "./node_modules/.bin/tslint --project . --config ./tslint.json",
-		"check-all": "npm run tslint && npm run test",
-		"build": "npm run tsc",
 		"clean": "del-cli dist",
-		"tsc": "tsc",
 		"tsc:watch": "tsc-watch",
 		"start": "npm run clean && npm run tsc:watch -- --onSuccess \"cross-env DEBUG=api* node ./dist/server.js\" --onFailure \"Typescript compilation failed\"",
 		"start:dev": "npm run clean && npm run tsc:watch -- --onSuccess \"cross-env DEBUG=api* node ./dist/server.js\" --onFailure \"Typescript compilation failed\""
