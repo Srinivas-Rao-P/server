@@ -75,6 +75,14 @@ class UserService {
 				AND u.isdeleted = 0
 		`);
 	}
+
+	public createUser(username: string, personId: string): Promise<any> {
+		return this.db.query(`
+			INSERT INTO users(id, username,candidateid)
+			values('${personId}', '${username}', '${personId}')
+		`);
+	}
+	
 }
 
 export default UserService;

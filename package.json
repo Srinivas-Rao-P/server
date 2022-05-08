@@ -11,7 +11,7 @@
 		"clean": "del-cli dist",
 		"tsc": "tsc",
 		"tsc:watch": "tsc-watch",
-		"start": "npm run build && DEBUG=api:server node ./dist/server.js",
+		"start": "npm run build && node ./dist/server.js",
 		"start:dev": "npm run clean && npm run tsc:watch -- --onSuccess \"cross-env DEBUG=api* node ./dist/server.js\" --onFailure \"Typescript compilation failed\""
 	},
 	"author": "",

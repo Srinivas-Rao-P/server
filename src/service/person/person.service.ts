@@ -11,13 +11,16 @@ class PersonService {
 	public async getProfile(personId: string): Promise<any> {
 
 		return this.db.query(`
-				SELECT 
-				p.imageurl, p.firstname, p.lastname, p.phone, p.email, p.address, p.city, p.state, p.zipcode, p.nationality, p.dateofbirth, p.gender
-				FROM 
-					profile as p
-				WHERE
-				 p.userid = ${personId}
-			`)
+		SELECT 
+			p.imageurl, ppc.phoneno, pn.name, pn.fname, pn.mname, pn.lname, pnc.email, pa.address, pa.city, pa.statecode, pa.zipcode,  p.nationality, p.dateofbirth, p.gender
+		FROM profile as p
+			left JOIN person_phone_contacts ppc on ppc.personid = p.candidateid  
+			left join person_names pn on pn.personid = p.candidateid  
+			left join person_net_contacts pnc on pnc.personid = p.candidateid 
+			left join person_address pa on pa.personid = p.candidateid 
+		WHERE
+			p.candidateid = ${personId}
+		`)
 	};
 	public async saveProfile(req: any): Promise<any> {
 
@@ -51,6 +54,55 @@ class PersonService {
 			return null
 		}
 	};
+
+	public async addEmail(req: any, personId: string): Promise<any> {
+		return this.db.query(`
+			INSERT INTO person_net_contacts(personid, netcontacttype, email) 
+			VALUES (
+				'${personId}',
+				'${req.emailtype}',
+				'${req.email}'
+			)
+		`)
+	};
+
+	public async addName(req: any, personId: string): Promise<any> {
+		return this.db.query(`
+			INSERT INTO person_names(personid, name, fname, mname, lname) 
+			VALUES (
+				'${personId}',
+				'${req.firstname +' '+ req.middlename +' '+ req.lastname}',
+				'${req.firstname}',
+				'${req.middlename}',
+				'${req.lastname}'
+			)
+		`)
+	};
+
+	public async addAddress(req: any, personId: string): Promise<any> {
+		return this.db.query(`
+			INSERT INTO person_address(personid, address, countrycode, city, statecode, zipcode) 
+			VALUES (
+				'${personId}',
+				'${req.address}',
+				'${req.countrycode}',
+				'${req.city}',
+				'${req.statecode}',
+				'${req.zipcode}'
+			)
+		`)
+	};
+
+	public async addPhone(req: any, personId: string): Promise<any> {
+		return this.db.query(`
+			INSERT INTO person_phone_contacts(personid, phoneno) 
+			VALUES (
+				'${personId}',
+				'${req.phone}'
+			)
+		`)
+	};
+
 }
 
 export default PersonService;

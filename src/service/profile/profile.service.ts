@@ -8,17 +8,28 @@ class ProfileService {
 		this.databaseget = new Database(true);
 	}
 
-	public async createProfile(req: any): Promise<any> {		
+	public async createProfile(req: any, personId:any): Promise<any> {	
+		console.log(`
+		INSERT into
+		profile (
+			dateofbirth, gender, maritalstatus, candidateid) 
+		VALUES (			
+			'${req.dob}',
+			'${req.gender}',
+			'${req.maritalstatus}',
+			'${personId}'
+		)
+	`);
+			
 		return this.db.query(`
 			INSERT into
 			profile (
-				userid, firstname, lastname, email, candidateid) 
-			VALUES (
-				'${req.candidateid}',
-				'${req.firstname}',
-				'${req.lastname}',
-				'${req.email}',
-				'${req.candidateid}'
+				dateofbirth, gender, maritalstatus, candidateid) 
+			VALUES (			
+				'${req.dob}',
+				'${req.gender}',
+				'${req.maritalstatus}',
+				'${personId}'
 			)
 		`)
 	};	

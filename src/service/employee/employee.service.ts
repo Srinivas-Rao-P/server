@@ -58,18 +58,17 @@ class EmployeeService {
 	public async manageEmployee(user: any): Promise<any> {
 
 		return this.db.query(`
-		select 
-			c.id, p.firstname , p.lastname, p.imageurl , c.designation, c.date as hiredate, 
-			(select CONCAT(p2.firstname,' ',p2.lastname) from profile p2 where p2.userid = c.managerid  ) as manager  
-		from 
-			profile p 
-		join 
-			candidates c on p.userid = c.id 
-		join
-			candidatestatus cs on c.status = cs.id
-			${user.userRole == 2 ? `where c.managerid = ${user.id}` : 'where true'} 
-		and cs.id = 3 
-		order by p.firstname asc
+			select 
+				c.id, pn.name,
+				(select pn2.name from person_names pn2 where pn2.personid = c.managerid) as manager, p.imageurl, c.designation, c.hiredate 
+			from 
+				profile p 
+			left join 
+				person_names pn on pn.personid = p.candidateid 			
+			left join 
+				candidates c on p.candidateid  = c.id
+				${user.userRole == 2 ? `where c.managerid = ${user.id}` : 'where true'} 			
+			order by p.firstname asc
 		`)
 	};
 }

@@ -36,6 +36,17 @@ class Person extends BaseController {
             res.status(500).send(this.getErrorResponse(e));
         }
     }
+    // public async addEmail(req: express.Request, res: express.Response): Promise<any> {
+    //     try {
+    //         const { personId } = req.params;
+	// 		req.body.personId = personId;
+    //         const result = await this.personService.saveProfile(req.body);
+    //         res.send(this.getSuccessResponse({ message: "Profile updated" }));
+    //     }
+    //     catch (e) {
+    //         res.status(500).send(this.getErrorResponse(e));
+    //     }
+    // }
 }
 
 export default Person;

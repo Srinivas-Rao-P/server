@@ -26,7 +26,7 @@ class Candidate extends BaseController {
             const result = await this.candidateService.addCandidate(req.body);
             req.body.candidateid = result.insertId;
             
-            await this.profileService.createProfile(req.body);
+            await this.profileService.createProfile(req.body, req.body.candidateid);
             res.send(this.getSuccessResponse(result));
         }
         catch (e) {

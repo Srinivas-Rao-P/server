@@ -10,26 +10,24 @@ class CandidateService {
 		this.databaseget = new Database(true);
 	}
 
-	public async addCandidate(req: any): Promise<any> {		
+	public async addCandidate(req: any): Promise<any> {
 		return this.db.query(`
-			INSERT into
-			candidates (
-				status, managerid, referrerid, designation, note, link, employerid) 
-			VALUES (				
-				${req.status ? req.status : 1},
-				'${req.managerid}',
-				'${req.referrerid}',
+		INSERT INTO candidates
+			(designation, hiredate, note, employerid, managerid, referrerid)
+			VALUES (	
 				'${req.designation}',
-				'${req.note}',
-				'${jwt.sign({ firstname: req.firstname.toLowerCase(), lastname: req.lastname.toLowerCase(), email: req.email.toLowerCase() }, process.env.ACCESS_TOKEN_SECRET)}',
-				${req.userid}
+				'${req.hiredate}',	
+				'${req.note}',						
+				'${req.userid}',
+				'${req.managerid}',
+				'${req.referrerid}'				
 			)
 		`)
-	};	
+	};
 
 	public async updateCandidate(req: any): Promise<any> {
 		let text = '';
-		const fields: any = [			
+		const fields: any = [
 			'status',
 			'managerid',
 			'designation',

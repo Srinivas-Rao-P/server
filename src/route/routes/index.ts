@@ -8,6 +8,8 @@ import emailRoutes from './email';
 import bankRoutes from './bank';
 import emergencycontactRoutes from './emergencycontact';
 import manageuserrolesRoutes from './manageuserroles';
+import hireRoutes from './hire';
+import mycontactinfoRoutes from './mycontactinfo';
 
 export const routes = [
 	...apiRoutes,
@@ -20,4 +22,6 @@ export const routes = [
 	...bankRoutes,
 	...emergencycontactRoutes,
 	...manageuserrolesRoutes,
+	...hireRoutes,
+	...mycontactinfoRoutes,
 ];
