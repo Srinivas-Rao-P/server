@@ -37,7 +37,7 @@ class ActivityController extends BaseController {
 			}
 		}
 		catch (error) {
-			res.status(500).send((error));
+			res.status(500).send(error);
 		}
 	}
 	public async candidateLogin(req: express.Request, res: express.Response): Promise<any> {
@@ -49,7 +49,7 @@ class ActivityController extends BaseController {
 			if (user) {
 				// validate token
 				const validateToken = await this.userService.verifyToken(req.body.token);
-				
+
 				if (validateToken) {
 					const result = await this.authService.candidateLogin(req.body);
 					res.send(this.getSuccessResponse({ accessToken: result.accessToken, refreshToken: result.refreshToken }));
@@ -63,7 +63,7 @@ class ActivityController extends BaseController {
 			}
 		}
 		catch (error) {
-			res.status(500).send((error));
+			res.status(500).send(error);
 		}
 	}
 
@@ -80,7 +80,7 @@ class ActivityController extends BaseController {
 			res.send(this.getSuccessResponse({ accessToken: result.accessToken }));
 		}
 		catch (error) {
-			res.status(500).send((error));
+			res.status(500).send(error);
 		}
 	}
 
@@ -96,7 +96,57 @@ class ActivityController extends BaseController {
 			}
 		}
 		catch (error) {
-			res.status(500).send((error));
+			res.status(500).send(error);
+		}
+	}
+
+	public async generateOtp(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const validateUser = await this.authService.validateUser(req.body.username);
+			if (validateUser) {
+				await this.authService.generateOtp(validateUser[0].id);
+				res.send(this.getSuccessResponse({ message: 'Otp sent successfull' }));
+			} else {
+				res.send(this.getSuccessResponse({ message: 'User name invalid' }));
+			}
+		}
+		catch (error) {
+			res.status(500).send(error);
+		}
+	}
+
+	public async verifyOtp(req: express.Request, res: express.Response): Promise<any> {
+		try {
+			const validateOtp = await this.authService.verifyOtp(req.body);
+			const validOtp = validateOtp && validateOtp.length ? true : null;
+
+			if (validOtp) {
+				res.send(this.getSuccessResponse({ id: true, message: 'Otp verified' }));
+			} else {
+				res.sendStatus(400)				
+			}
+		}
+		catch (error) {
+			res.status(500).send(error);
+		}
+	}
+
+	public async resetPassword(req: express.Request, res: express.Response): Promise<any> {
+		try {
+
+			const validateOtp = await this.authService.verifyOtp(req.body);
+
+			const validOtp = validateOtp && validateOtp.length ? true : null;
+			if (validOtp) {
+
+				await this.authService.resetPassword(req.body);
+				res.send(this.getSuccessResponse({ message: 'Password changed successfully' }));
+			} else {
+				res.send(this.getErrorResponse(Error('OTP invalid/expired'), 400));
+			}
+		}
+		catch (error) {
+			res.status(500).send(error);
 		}
 	}
 
@@ -106,7 +156,7 @@ class ActivityController extends BaseController {
 			res.send(this.getSuccessResponse({ id: result.insertId, message: 'Logged out successfully' }));
 		}
 		catch (error) {
-			res.status(500).send((error));
+			res.status(500).send(error);
 		}
 	}
 }

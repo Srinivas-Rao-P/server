@@ -18,6 +18,18 @@ const routes: ApiRoute[] = [{
     method: RouteMethod.POST,
     path: `${apiPrefix}/auth/refreshToken`
 }, {
+    controller: 'auth#generateOtp',
+    method: RouteMethod.POST,
+    path: `${apiPrefix}/auth/generateOtp`
+}, {
+    controller: 'auth#verifyOtp',
+    method: RouteMethod.POST,
+    path: `${apiPrefix}/auth/verifyOtp`
+}, {
+    controller: 'auth#resetPassword',
+    method: RouteMethod.POST,
+    path: `${apiPrefix}/auth/resetPassword`
+},{
     controller: 'auth#logout',
     method: RouteMethod.POST,
     path: `${apiPrefix}/auth/logout`

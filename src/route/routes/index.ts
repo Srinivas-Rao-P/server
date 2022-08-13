@@ -10,6 +10,9 @@ import emergencycontactRoutes from './emergencycontact';
 import manageuserrolesRoutes from './manageuserroles';
 import hireRoutes from './hire';
 import mycontactinfoRoutes from './mycontactinfo';
+import timeRoutes from './time';
+import historyRoutes from './history';
+
 
 export const routes = [
 	...apiRoutes,
@@ -24,4 +27,6 @@ export const routes = [
 	...manageuserrolesRoutes,
 	...hireRoutes,
 	...mycontactinfoRoutes,
+	...timeRoutes,
+	...historyRoutes,
 ];

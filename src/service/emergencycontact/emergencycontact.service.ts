@@ -1,17 +1,20 @@
 import Database from '../database/database';
+import HistoryService from '../history/history.service';
 
 class EmergencycontactService {
 	private db: Database;
 	private databaseget: Database;
+	private historyService: HistoryService;
 	constructor() {
 		this.db = new Database();
 		this.databaseget = new Database(true);
+		this.historyService = new HistoryService();
 	}
 
 	public async addEmergencyContact(personId:any, req: any): Promise<any> {		
 		return this.db.query(`
 			INSERT into
-			emergencycontact ( name, address, phone, email, relationshipid, notes, userid ) 
+			emergency_contact ( name, address, phone, email, relationshipid, notes, userid ) 
 			VALUES ( 
 				'${req.name}',
 				'${req.address}',
@@ -25,6 +28,9 @@ class EmergencycontactService {
 	};
 
 	public async updateEmergencyContact(req: any): Promise<any> {
+		
+		await this.historyService.createHistory(req);
+
 		let text = '';
 		const fields: any = [
 			'name',
@@ -46,7 +52,7 @@ class EmergencycontactService {
 		if (text && req.id) {
 			text += ` updatedat = UTC_TIMESTAMP, updateduserid = ${req.userid}`;
 			return this.db.query(`
-				Update emergencycontact
+				Update emergency_contact
 			SET
 				${text}
 			WHERE
@@ -59,8 +65,8 @@ class EmergencycontactService {
 
 	public async getEmergencyContactList(req: any): Promise<any> {
 		return this.db.query(`
-			SELECT e.id, e.name, e.address, e.phone, e.email, dp.relationship, e.notes 
-			FROM emergencycontact e
+			SELECT e.id, e.pid, e.name, e.address, e.phone, e.email, dp.relationship, e.notes 
+			FROM emergency_contact e
 			LEFT JOIN 
 				dependentrelationship dp 
 			ON 
@@ -72,8 +78,8 @@ class EmergencycontactService {
 
 	public async getEmergencyContact(emergencycontactId: number): Promise<any> {
 		return this.db.query(`
-		SELECT e.id, e.name, e.address, e.phone, e.email, e.relationshipid, e.notes 
-		FROM emergencycontact e 
+		SELECT e.id, e.pid, e.name, e.address, e.phone, e.email, e.relationshipid, e.notes 
+		FROM emergency_contact e 
 		WHERE e.id = ${emergencycontactId}	
 		`)
 	};
@@ -83,7 +89,7 @@ class EmergencycontactService {
 			relationshipList: await this.db.query(`
 				SELECT dp.id, dp.relationship 
 				FROM dependentrelationship dp
-				where ${mode === 'addForm' ? `dp.id NOT IN (select e.relationshipid from emergencycontact e where e.userid = ${personId})` : 1} 
+				where ${mode === 'addForm' ? `dp.id NOT IN (select e.relationshipid from emergency_contact e where e.userid = ${personId})` : 1} 
 				ORDER BY dp.relationship
 	
 			`)

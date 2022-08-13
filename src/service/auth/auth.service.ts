@@ -48,6 +48,7 @@
 
 import Database from '../database/database';
 import UserService from '../user/user.service';
+import otpGenerator from 'otp-generator';
 import jwt from 'jsonwebtoken';
 
 class AuthService {
@@ -149,6 +150,37 @@ class AuthService {
                 )
             `);
   }
+
+  public async validateUser(username: string): Promise<any> {
+    console.log(`select u.id from users u where username = '${username}'`);
+
+    return this.db.query(`
+      select u.id from users u where username = '${username}'
+    `);
+  }
+
+  public async generateOtp(userid: string): Promise<any> {
+    const otp = otpGenerator.generate(6, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false })
+    return this.db.query(`
+      INSERT INTO resetpassword(personid, otp) VALUES (${userid}, ${otp})
+      ON DUPLICATE KEY UPDATE otp = ${otp};
+    `);
+
+  }
+
+  public async verifyOtp(req: any): Promise<any> {
+    return this.db.query(`
+      select r.id from resetpassword r where r.personid = (select id from users u where u.username = '${req.username}')
+      and r.otp = '${req.otp}'
+    `);
+  }
+
+  public async resetPassword(req: any): Promise<any> {
+    return this.db.query(`
+      update users set password = '${req.password}' where username = '${req.username}'
+    `);
+  }
+
   public async logout(token: string): Promise<any> {
     return this.db.query(`
       DELETE FROM tokens WHERE refreshToken = '${token}'

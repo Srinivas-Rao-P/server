@@ -5,7 +5,7 @@ export interface SuccessResponse {
 
 export interface ErrorMessage {
 	message: string;
-	details: string;
+	// details: string;
 }
 
 export interface ErrorResponse {
@@ -22,7 +22,7 @@ export class BaseController {
 	public getErrorResponse(err: Error, statusCode: number = 500): ErrorResponse {
 		return {
 			error: {
-				details: err.stack,
+				// details: err.stack,
 				message: err.message
 			},
 			status: statusCode
