@@ -60,15 +60,15 @@ class EmployeeService {
 		return this.db.query(`
 			select 
 				c.id, pn.name,
-				(select pn2.name from person_names pn2 where pn2.personid = c.managerid) as manager, p.imageurl, c.designation, c.hiredate 
+				(select pn2.name from person_names pn2 where pn2.id = c.managerid) as manager, p.imageurl, c.designation, c.hiredate 
 			from 
 				profile p 
 			left join 
-				person_names pn on pn.personid = p.candidateid 			
+				person_names pn on pn.id = p.candidateid 			
 			left join 
 				candidates c on p.candidateid  = c.id
-				${user.userRole == 2 ? `where c.managerid = ${user.id}` : 'where true'} 			
-			order by p.firstname asc
+				${user.userRole == 2 ? `where c.managerid = ${user.id}` : `where c.id != ${user.id}`} 			
+			order by c.hiredate desc
 		`)
 	};
 }

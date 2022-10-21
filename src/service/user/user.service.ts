@@ -78,7 +78,7 @@ class UserService {
 
 	public createUser(username: string, personId: string): Promise<any> {
 		return this.db.query(`
-			INSERT INTO users(id, username,candidateid)
+			INSERT INTO users(id, username, candidateid)
 			values('${personId}', '${username}', '${personId}')
 		`);
 	}

@@ -11,11 +11,15 @@ class Menu extends BaseController {
 	}
 
 
-	public async getMenuItems(req: express.Request, res: express.Response): Promise<any> {
+	public async getMenu(req: express.Request, res: express.Response): Promise<any> {
 		try {
 			const user = req.user as any;
-			const menu = await this.menuService.getMenuItems(user);
-			menu.subMenu = await this.menuService.getSubMenu(user, 5);
+			const menu = await this.menuService.getMenu(user);
+
+			for (const eachMenu of menu) {							
+				eachMenu.submenu = await this.menuService.getSubmenu(user, eachMenu.id)
+			}
+			
 			res.send(this.getSuccessResponse(menu));
 		}
 		catch (e) {
@@ -23,66 +27,25 @@ class Menu extends BaseController {
 		}
 	}
 
-	public async getSubMenu(req: express.Request, res: express.Response): Promise<any> {
+	public async saveMenu(req: express.Request, res: express.Response): Promise<any> {
 		try {
 			const user = req.user as any;
+            req.body.userid = user.id;
+
+			for (const submenu of req.body.submenu) {		
+				await this.menuService.saveSubmenu(submenu.id, submenu);
+			  }
+			await this.menuService.saveMenu(req.body);
+
 			
-			const result = await this.menuService.getSubMenu(user, req.body.menuId);
-			res.send(this.getSuccessResponse(result));
-		}
-		catch (e) {
-			res.status(500).send(this.getErrorResponse(e));
-		}
-	
-	}
 
-	public async addMainMenu(req: express.Request, res: express.Response): Promise<any> {
-		try {
-			const user = req.user as any;
-			
-			await this.menuService.addMainMenu(req.body);
-			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
+			res.send(this.getSuccessResponse({ message: 'Menu saved successfully' }));
 		}
 		catch (e) {
 			res.status(500).send(this.getErrorResponse(e));
 		}
 	}
 
-	public async addSubMenu(req: express.Request, res: express.Response): Promise<any> {
-		try {
-			const user = req.user as any;
-			const { menuId } = req.params;
-			await this.menuService.addSubMenu(req.body, menuId);
-			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
-		}
-		catch (e) {
-			res.status(500).send(this.getErrorResponse(e));
-		}
-	}
-
-	public async updateMenu(req: express.Request, res: express.Response): Promise<any> {
-		try {
-			const user = req.user as any;
-			await this.menuService.updateMenu(req.body);
-			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
-		}
-		catch (e) {
-			res.status(500).send(this.getErrorResponse(e));
-		}
-	}
-
-	public async updateSubMenu(req: express.Request, res: express.Response): Promise<any> {
-		try {
-			const user = req.user as any;			
-			const { menuId } = req.params;
-			
-			await this.menuService.updateSubMenu(req.body, menuId);
-			res.send(this.getSuccessResponse({ message: 'Menu added successfully' }));
-		}
-		catch (e) {
-			res.status(500).send(this.getErrorResponse(e));
-		}
-	}
 }
 
 export default Menu;

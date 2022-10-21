@@ -44,9 +44,9 @@ class Bank extends BaseController {
         try {
             const user = req.user as any;
             req.body.userid = user.id;
-            const { personId } = req.params;
+            const { personId, showDeletedRecords } = req.params;
             req.body.personId = personId;
-            const list = await this.bankService.getBankList(req.body);
+            const list = await this.bankService.getBankList(req.body, showDeletedRecords);
 
             list.forEach((v: any) => {
                 v.accountnumber = v.accountnumber.slice(0, -4).replace(/./g, "*") + ('' + v.accountnumber).slice(-4);

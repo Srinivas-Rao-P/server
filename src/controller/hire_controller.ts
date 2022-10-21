@@ -5,6 +5,7 @@ import CandidateService from '../service/candidate/candidate.service';
 import PersonService from '../service/person/person.service';
 import UserService from '../service/user/user.service';
 import ProfileService from '../service/profile/profile.service';
+import MycontactinfoService from '../service/mycontactinfo/mycontactinfo.service';
 
 
 class Newhire extends BaseController {
@@ -13,6 +14,7 @@ class Newhire extends BaseController {
     private personService: PersonService;
     private userService: UserService;
     private profileService: ProfileService;
+    private mycontactinfoService: MycontactinfoService;
     constructor() {
         super();
         this.newhireService = new NewhireService();
@@ -20,6 +22,7 @@ class Newhire extends BaseController {
         this.personService = new PersonService();
         this.userService = new UserService();
         this.profileService = new ProfileService();
+        this.mycontactinfoService = new MycontactinfoService();
     }
 
 
@@ -29,11 +32,14 @@ class Newhire extends BaseController {
             req.body.userid = user.id;
             
             const candidate = await this.candidateService.addCandidate(req.body)
-            
-            await this.personService.addName(req.body, candidate.insertId)
-            await this.personService.addAddress(req.body, candidate.insertId)
-            await this.personService.addPhone(req.body, candidate.insertId)
-            await this.personService.addEmail(req.body, candidate.insertId)
+            req.body.nametype = 8;
+            req.body.phonecontacttype = 3;           
+            req.body.addresstype = 6;
+            await this.mycontactinfoService.addName(candidate.insertId, req.body)
+            await this.mycontactinfoService.addAddress(candidate.insertId, req.body)
+            req.body.countrycode = 91;
+            await this.mycontactinfoService.addPhone(candidate.insertId, req.body)
+            await this.mycontactinfoService.addEmail(candidate.insertId, req.body)
             await this.userService.createUser(req.body.username, candidate.insertId)
             await this.profileService.createProfile(req.body, candidate.insertId)
             // const newhire = await this.newhireService.getNewhireItems(user);

@@ -12,12 +12,12 @@ class PersonService {
 
 		return this.db.query(`
 		SELECT 
-			p.imageurl, ppc.phoneno, pn.name, pn.fname, pn.mname, pn.lname, pnc.email, pa.address, pa.city, pa.statecode, pa.zipcode,  p.nationality, p.dateofbirth, p.gender
+			p.imageurl, ppc.phoneno, pn.name, pn.fname, pn.mname, pn.lname, pnc.email, pa.address,pa.countrycode, pa.city, pa.statecode, pa.zipcode,  p.nationality, p.dateofbirth, p.gender
 		FROM profile as p
-			left JOIN person_phone_contacts ppc on ppc.personid = p.candidateid  
-			left join person_names pn on pn.personid = p.candidateid  
-			left join person_net_contacts pnc on pnc.personid = p.candidateid 
-			left join person_address pa on pa.personid = p.candidateid 
+			left JOIN person_phone_contacts ppc on ppc.userid = p.candidateid  
+			left join person_names pn on pn.userid = p.candidateid  
+			left join person_net_contacts pnc on pnc.userid = p.candidateid 
+			left join person_address pa on pa.userid = p.candidateid 
 		WHERE
 			p.candidateid = ${personId}
 		`)
@@ -55,51 +55,63 @@ class PersonService {
 		}
 	};
 
-	public async addEmail(req: any, personId: string): Promise<any> {
-		return this.db.query(`
-			INSERT INTO person_net_contacts(personid, netcontacttype, email) 
-			VALUES (
-				'${personId}',
-				'${req.emailtype}',
-				'${req.email}'
-			)
-		`)
-	};
+	// public async addEmail(req: any, personId: string): Promise<any> {
+	// 	return this.db.query(`
+	// 		INSERT INTO person_net_contacts(id, netcontacttype, email) 
+	// 		VALUES (
+	// 			'${personId}',
+	// 			'${req.netcontacttype}',
+	// 			'${req.email}'
+	// 		)
+	// 	`)
+	// };
 
-	public async addName(req: any, personId: string): Promise<any> {
-		return this.db.query(`
-			INSERT INTO person_names(personid, name, fname, mname, lname) 
-			VALUES (
-				'${personId}',
-				'${req.firstname +' '+ req.middlename +' '+ req.lastname}',
-				'${req.firstname}',
-				'${req.middlename}',
-				'${req.lastname}'
-			)
-		`)
-	};
+	// public async addName(req: any, personId: string): Promise<any> {
+	// 	return this.db.query(`
+	// 		INSERT INTO person_names(id, name, fname, mname, lname, nameevent, nametype) 
+	// 		VALUES (
+	// 			'${personId}',
+	// 			'${req.firstname +' '+ req.middlename +' '+ req.lastname}',
+	// 			'${req.firstname}',
+	// 			'${req.middlename}',
+	// 			'${req.lastname}',
+	// 			1,8
+	// 		)
+	// 	`)
+	// };
 
-	public async addAddress(req: any, personId: string): Promise<any> {
-		return this.db.query(`
-			INSERT INTO person_address(personid, address, countrycode, city, statecode, zipcode) 
-			VALUES (
-				'${personId}',
-				'${req.address}',
-				'${req.countrycode}',
-				'${req.city}',
-				'${req.statecode}',
-				'${req.zipcode}'
-			)
-		`)
-	};
+	// public async addAddress(req: any, personId: string): Promise<any> {
+	// 	return this.db.query(`
+	// 		INSERT INTO person_address(personid, address, countrycode, city, statecode, zipcode) 
+	// 		VALUES (
+	// 			'${personId}',
+	// 			'${req.address}',
+	// 			'${req.countrycode}',
+	// 			'${req.city}',
+	// 			'${req.statecode}',
+	// 			'${req.zipcode}'
+	// 		)
+	// 	`)
+	// };
 
-	public async addPhone(req: any, personId: string): Promise<any> {
+	// public async addPhone(req: any, personId: string): Promise<any> {
+	// 	return this.db.query(`
+	// 		INSERT INTO person_phone_contacts(userid, phoneno) 
+	// 		VALUES (
+	// 			'${personId}',
+	// 			'${req.phone}'
+	// 		)
+	// 	`)
+	// };
+
+	public async getPersonInfo(personId: string): Promise<any> {
+
 		return this.db.query(`
-			INSERT INTO person_phone_contacts(personid, phoneno) 
-			VALUES (
-				'${personId}',
-				'${req.phone}'
-			)
+		SELECT pn.id, pn.name, pn.fname, pn.lname, pn.mname, pnc.email
+		FROM person_names pn 
+		left join person_net_contacts pnc 
+        	on pn.userid = pnc.userid
+		where pn.userid = ${personId}
 		`)
 	};
 

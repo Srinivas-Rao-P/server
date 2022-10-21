@@ -29,7 +29,7 @@ class EmergencycontactService {
 
 	public async updateEmergencyContact(req: any): Promise<any> {
 		
-		await this.historyService.createHistory(req);
+		await this.historyService.createHistory(req.id, req.pid);
 
 		let text = '';
 		const fields: any = [
@@ -63,16 +63,20 @@ class EmergencycontactService {
 		}
 	};
 
-	public async getEmergencyContactList(req: any): Promise<any> {
-		return this.db.query(`
-			SELECT e.id, e.pid, e.name, e.address, e.phone, e.email, dp.relationship, e.notes 
-			FROM emergency_contact e
-			LEFT JOIN 
-				dependentrelationship dp 
-			ON 
-				dp.id = e.relationshipid
-			WHERE e.userid = ${req.personId}	
-		`)
+	public async getEmergencyContactList(req: any, showDeletedRecords: String): Promise<any> {
+		
+		let sqlSmt = "";
+
+		if(showDeletedRecords === "false"){
+			sqlSmt = `SELECT e.id, e.pid, e.name, e.address, e.phone, e.email, dp.relationship, e.notes 
+			FROM emergency_contact e LEFT JOIN dependent_relationship dp ON dp.id = e.relationshipid WHERE e.userid = ${req.personId}`;
+		}else{
+			sqlSmt = `SELECT e.id, e.pid, e.name, e.address, e.phone, e.email, dp.relationship, e.notes 
+			FROM emergency_contact_history e LEFT JOIN dependent_relationship dp ON dp.id = e.relationshipid WHERE e.userid = ${req.personId} and e.is_deleted = true`;
+			
+		}
+		
+		return this.db.query(sqlSmt);
 	};
 
 
@@ -88,7 +92,7 @@ class EmergencycontactService {
 		const createDD = {
 			relationshipList: await this.db.query(`
 				SELECT dp.id, dp.relationship 
-				FROM dependentrelationship dp
+				FROM dependent_relationship dp
 				where ${mode === 'addForm' ? `dp.id NOT IN (select e.relationshipid from emergency_contact e where e.userid = ${personId})` : 1} 
 				ORDER BY dp.relationship
 	

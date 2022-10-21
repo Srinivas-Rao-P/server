@@ -15,7 +15,7 @@ const routes: ApiRoute[] = [{
     middlewares: [
         verifyToken()
     ],
-    path: `${apiPrefix}/emergencycontact/getEmergencyContactList/:personId`
+    path: `${apiPrefix}/emergencycontact/getEmergencyContactList/:personId/:showDeletedRecords`
 },
 {
     controller: 'emergencycontact#getEmergencyContact',
