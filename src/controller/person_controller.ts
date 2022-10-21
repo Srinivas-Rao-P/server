@@ -36,6 +36,18 @@ class Person extends BaseController {
             res.status(500).send(this.getErrorResponse(e));
         }
     }
+
+    public async getPersonInfo(req: express.Request, res: express.Response): Promise<any> {
+        try {
+            const { personId } = req.params;
+            const result = await this.personService.getPersonInfo(personId);
+            res.send(this.getSuccessResponse(result[0]));
+        }
+        catch (e) {
+            res.status(500).send(this.getErrorResponse(e));
+        }
+    }
+    
     // public async addEmail(req: express.Request, res: express.Response): Promise<any> {
     //     try {
     //         const { personId } = req.params;

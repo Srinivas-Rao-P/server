@@ -12,12 +12,16 @@ class Database implements DatabaseInterface {
 	public closeConnection(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			if (!this.connection) {
+				console.log("connected");
+				
 				return resolve("Connected");
 			}
 			this.connection.end((err: MysqlError) => {
 				if (err) {
 					return reject(err);
 				}
+				console.log('Failed to close connections');
+				
 				return resolve('Failed to close connections');
 			});
 		});

@@ -15,6 +15,13 @@ const routes: ApiRoute[] = [{
 		verifyToken()
 	],
 	path: `${apiPrefix}/person/saveProfile/:personId`
+},{
+	controller: 'person#getPersonInfo',
+	method: RouteMethod.GET,
+	middlewares: [
+		verifyToken()
+	],
+	path: `${apiPrefix}/person/getPersonInfo/:personId`
 },
 ];
 

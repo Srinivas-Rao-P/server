@@ -21,7 +21,7 @@ const routes: ApiRoute[] = [{
     middlewares: [
         verifyToken()
     ],
-    path: `${apiPrefix}/bank/getBankList/:personId`
+    path: `${apiPrefix}/bank/getBankList/:personId/:showDeletedRecords`
 },
 {
     controller: 'bank#getBankData',
