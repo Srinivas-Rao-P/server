@@ -192,5 +192,5 @@ class AuthService {
 export default AuthService;
 
 const generateAccessToken = (user: any) => {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1500s' })
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1500000s' })
 }

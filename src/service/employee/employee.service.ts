@@ -64,7 +64,7 @@ class EmployeeService {
 			from 
 				profile p 
 			left join 
-				person_names pn on pn.id = p.candidateid 			
+				person_names pn on pn.userid = p.candidateid 			
 			left join 
 				candidates c on p.candidateid  = c.id
 				${user.userRole == 2 ? `where c.managerid = ${user.id}` : `where c.id != ${user.id}`} 			

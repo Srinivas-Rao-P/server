@@ -11,6 +11,7 @@ import manageuserrolesRoutes from './manageuserroles';
 import hireRoutes from './hire';
 import mycontactinfoRoutes from './mycontactinfo';
 import timeRoutes from './time';
+import leaveRoutes from './leave';
 import historyRoutes from './history';
 
 
@@ -28,5 +29,6 @@ export const routes = [
 	...hireRoutes,
 	...mycontactinfoRoutes,
 	...timeRoutes,
+	...leaveRoutes,
 	...historyRoutes,
 ];
